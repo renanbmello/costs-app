@@ -27,7 +27,9 @@ function App() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const response = await axios.get('http://localhost:5000/items')
+        const response = await axios.get(
+          'https://costs-backend-1.onrender.com/items',
+        )
         setItems(response.data)
 
         const total = response.data.reduce((acc, item) => acc + item.value, 0)
@@ -51,7 +53,7 @@ function App() {
       }
       try {
         const response = await axios.post(
-          'http://localhost:5000/items',
+          'https://costs-backend-1.onrender.com/items',
           newItem,
         )
         setItems([...items, response.data])
@@ -68,7 +70,7 @@ function App() {
 
   const deleteItem = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:5000/items/${itemId}`)
+      await axios.delete(`https://costs-backend-1.onrender.com/items/${itemId}`)
       const updatedItems = items.filter((item) => item._id !== itemId)
       setItems(updatedItems)
       setTotalValue(totalValue - itemValue)
