@@ -8,6 +8,8 @@ import {
   Typography,
   ThemeProvider,
   createTheme,
+  CircularProgress,
+  Box,
 } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import axios from 'axios'
@@ -19,6 +21,7 @@ const darkTheme = createTheme({
 })
 
 function App() {
+  const [loading, setLoading] = React.useState(false)
   const [items, setItems] = useState([])
   const [itemName, setItemName] = useState('')
   const [itemValue, setItemValue] = useState('')
@@ -42,6 +45,7 @@ function App() {
   }, [])
 
   const addItem = async () => {
+    setLoading(true)
     if (
       itemName.trim() !== '' &&
       !isNaN(itemValue) &&
@@ -60,8 +64,10 @@ function App() {
         setItemName('')
         setItemValue('')
         setTotalValue(totalValue + parseFloat(itemValue))
+        setLoading(false)
       } catch (error) {
         console.error('Erro ao adicionar item:', error)
+        setLoading(false)
       }
     } else {
       alert('Por favor, insira um nome e um valor válido para o item.')
@@ -99,9 +105,16 @@ function App() {
           onChange={(e) => setItemValue(e.target.value)}
           style={{ marginRight: '10px' }}
         />
-        <Button variant="contained" onClick={addItem}>
+        <Button
+          variant="contained"
+          onClick={addItem}
+          style={{ marginBottom: '20px', marginTop: '20px' }}
+        >
           Adicionar
         </Button>
+        <Box display="flex" justifyContent="center" mt={2}>
+          {loading && <CircularProgress />}
+        </Box>
 
         <Typography variant="h4" gutterBottom style={{ marginTop: '50px' }}>
           Lista de Itens
